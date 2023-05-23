@@ -18,7 +18,7 @@
   <script src="speech.js"></script>
 
 
-  <h1>Day4Words</h1> 
+  <h1>Day4Words</h1>
   <div class="word-card" id="word-card-1">
     <div class="label" onclick="wordCardClicked(1)"> </div>
     <button class="sound" id="speech-button-1" onclick="Speak(1)"> Sound </button>
@@ -39,7 +39,7 @@
   <input type="text" class="counter" value="0" id="counter" onchange="updateCounter()"></input>
   <button class="button" onclick="changeCounter(1)">-</button>
   <button class="button" onclick="changeCounter(0)">+</button>
-  <p style="float:right"> v1.0.0</p>
+  <p style="float:right"> v1.0.1</p>
 
   <!-- having the scripts here makes sure they are loaded  -->
   <script>
@@ -48,7 +48,78 @@
     // Initialize the counter variable
     var counterValue = 0;
 
+    // fill 4 word cards depending on index
+    function fillWordCards(day) {
+      // get html element
+      var wordCards = document.getElementsByClassName("word-card");
+      var wordLen = wordCards.length
 
+      // iterate over the word cards
+      for (var i = 0; i < wordLen; i++) {
+        // get word card
+        var wordCard = wordCards[i];
+
+        //calculate index
+        var index = day * wordLen + i
+
+        // retrieve tuple (italian, english)
+        var word = words[index];
+
+        // set word card attributes
+        wordCard.children[0].innerHTML = word[0];
+        wordCard.setAttribute('data-current-language', 'italian')
+        wordCard.setAttribute('italian', word[0]);
+        wordCard.setAttribute('english', word[1]);
+        wordCard.classList.add('toggled');
+
+        // show button
+        wordCard.children[1].hidden = false;
+
+
+      }
+    }
+    // this function handles toggle when word card is clicked
+    function wordCardClicked(id) {
+      // select word card
+      var div = document.getElementById('word-card-' + String(id));
+
+      // get attributes from word card
+      var currentLanguage = div.getAttribute('data-current-language');
+      var englishValue = div.getAttribute('english');
+      var italianValue = div.getAttribute('italian');
+
+      // switch to italian
+      if (currentLanguage === 'english') {
+
+        // show the italian side 
+        div.children[0].innerHTML = italianValue;
+
+        // show the speak button
+        div.children[1].hidden = false;
+
+        // add toggled class
+        div.classList.add('toggled');
+
+        // save new language italian
+        div.setAttribute('data-current-language', 'italian');
+
+      }
+      // switch to english
+      else {
+
+        // show the english side
+        div.children[0].innerHTML = englishValue;
+
+        // hide the speak button 
+        div.children[1].hidden = true;
+
+        // remove toggled class
+        div.classList.remove('toggled');
+
+        // save new language english
+        div.setAttribute('data-current-language', 'english');
+      }
+    }
     // this function updates counter when text field is manually added
     function updateCounter() {
       var counterElement = document.getElementById("counter");
