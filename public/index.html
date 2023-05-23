@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="minimal-ui, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>day4words</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <script type="text/javascript" src="words.js"></script>
+  <script src="speech.js"></script>
+
+
+  <h1>Day4Words</h1>
+  <div class="word-card" id="word-card-1">
+    <div class="label" onclick="wordCardClicked(1)"> </div>
+    <button class="sound" id="speech-button-1" onclick="Speak(1)"> Sound </button>
+  </div>
+  <div class="word-card" id="word-card-2">
+    <div class="label" onclick="wordCardClicked(2)"> </div>
+    <button class="sound" id="speech-button-2" onclick="Speak(2)"> Sound </button>
+  </div>
+  <div class="word-card" id="word-card-3">
+    <div class="label" onclick="wordCardClicked(3)"> </div>
+    <button class="sound" id="speech-button-3" onclick="Speak(3)"> Sound </button>
+  </div>
+  <div class="word-card" id="word-card-4">
+    <div class="label" onclick="wordCardClicked(4)"> </div>
+    <button class="sound" id="speech-button-4" onclick="Speak(4)"> Sound </button>
+  </div>
+
+  <input type="text" class="counter" value="0" id="counter" onchange="updateCounter()"></input>
+  <button class="button" onclick="changeCounter(1)">-</button>
+  <button class="button" onclick="changeCounter(0)">+</button>
+
+  <!-- having the scripts here makes sure they are loaded  -->
+  <script>
+    fillWordCards(0);
+
+    // Initialize the counter variable
+    var counterValue = 0;
+
+
+    // this function updates counter when text field is manually added
+    function updateCounter() {
+      var counterElement = document.getElementById("counter");
+      counterValue = counterElement.value
+      fillWordCards(counterValue)
+    }
+
+    // this function changes counter when + (op == 0) or - (op == 1) button is pressed 
+    function changeCounter(op) {
+      // get counter display
+      var counterElement = document.getElementById("counter");
+
+      // + Button pressed
+      if (op == 0) {
+        // increment
+        counterValue++;
+      }
+      // - Button pressed
+      else {
+        // decrement only when greater 0
+        if (counterValue > 0) {
+          counterValue--;
+        }
+      }
+
+      // set new value
+      counterElement.value = counterValue;
+
+      // fill new word cards
+      fillWordCards(counterValue)
+    }
+
+  </script>
+</body>
+
+</html>
