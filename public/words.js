@@ -71,7 +71,11 @@ function fillWordCards(day) {
         wordCard.setAttribute('data-current-language', 'italian')
         wordCard.setAttribute('italian', word[0]);
         wordCard.setAttribute('english', word[1]);
-        wordCard.classList.add('toggled');
+        wordCard.classList.add('toggled');        
+        
+        // show button
+        wordCard.children[1].hidden = false;
+
 
     }
 }
