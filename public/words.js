@@ -7,3 +7,129 @@
 
 
 
+
+// Initialize the counter variable
+var counterValue = 0;
+
+// fill 4 word cards depending on index
+function fillWordCards(day) {
+    // get html element
+
+    var wordCards = document.getElementsByClassName("word-card");
+    var wordLen = wordCards.length
+    for (var i = 0; i < wordLen; i++) {
+        // get word card
+        var wordCard = wordCards[i];
+
+        //calculate index
+        var index = day * wordLen + i
+
+        // retrieve tuple (italian, english)
+        var word = words[index];
+
+        // set word card attributes
+        wordCard.children[0].innerHTML = word[0];
+        wordCard.setAttribute('data-current-language', 'italian')
+        wordCard.setAttribute('italian', word[0]);
+        wordCard.setAttribute('english', word[1]);
+        wordCard.classList.add('toggled');
+
+        // show button
+        wordCard.children[1].hidden = false;
+
+    }
+}
+
+// this function handles toggle when word card is clicked
+function wordCardClicked() {
+    // select word card
+    var div = this
+
+    // get attributes from word card
+    var currentLanguage = div.getAttribute('data-current-language');
+    var englishValue = div.getAttribute('english');
+    var italianValue = div.getAttribute('italian');
+
+    // switch to italian
+    if (currentLanguage === 'english') {
+
+        // show the italian side 
+        div.children[0].innerHTML = italianValue;
+
+        // show the speak button
+        div.children[1].hidden = false;
+
+        // add toggled class
+        div.classList.add('toggled');
+
+        // save new language italian
+        div.setAttribute('data-current-language', 'italian');
+
+    }
+    // switch to english
+    else {
+
+        // show the english side
+        div.children[0].innerHTML = englishValue;
+
+        // hide the speak button 
+        div.children[1].hidden = true;
+
+        // remove toggled class
+        div.classList.remove('toggled');
+
+        // save new language english
+        div.setAttribute('data-current-language', 'english');
+    }
+}
+// this function updates counter when text field is manually added
+function updateCounter() {
+    var counterElement = document.getElementById("counter");
+    counterValue = counterElement.value
+    fillWordCards(counterValue)
+}
+
+// this function changes counter when + button is pressed 
+function addCounter() {
+    // get counter display
+    var counterElement = document.getElementById("counter");
+
+    // increment
+    counterValue++;
+
+    // set new value
+    counterElement.value = counterValue;
+
+    // fill new word cards
+    fillWordCards(counterValue)
+}
+// this function changes counter when - button is pressed 
+function minusCounter(op) {
+    // get counter display
+    var counterElement = document.getElementById("counter");
+
+    // decrement only when greater 0
+    if (counterValue > 0) {
+        counterValue--;
+    }
+
+    // set new value
+    counterElement.value = counterValue;
+
+    // fill new word cards
+    fillWordCards(counterValue)
+}
+
+
+fillWordCards(0);
+document.getElementById("plus").onclick = addCounter;
+document.getElementById("minus").onclick = minusCounter;
+document.getElementById("counter").onchange = updateCounter;
+
+var wordCards = document.getElementsByClassName("word-card");
+var wordLen = wordCards.length
+// iterate over the word cards
+for (var i = 0; i < wordLen; i++) {
+    wordCards[i].onclick = wordCardClicked;
+}
+

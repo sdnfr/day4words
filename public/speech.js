@@ -20,11 +20,11 @@ function textToSpeech(text) {
 }
 
 // handle speak button call
-function Speak(id)
+function Speak(but)
 {
     // select correct text to speak
-    var div = document.getElementById('word-card-' + String(id)).children[0];
-    text = div.innerHTML
+    var div = but.parentNode.children[0];
+    var text = div.innerHTML
 
     // only speak if there is text
     if (text !== "") {
@@ -47,5 +47,15 @@ function Speak(id)
                 isSpeaking = true;
             }
         } 
+    }
+}
+
+
+var soundButtons = document.getElementsByClassName("sound");
+// add soundbuttons
+for (var i = 0; i < soundButtons.length; i++) {
+    soundButtons[i].onclick = function (event) {
+        Speak(this);
+        event.stopPropagation()
     }
 }
