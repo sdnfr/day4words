@@ -18,8 +18,12 @@ body {
     align-items: center;
 }
 
-.login-button {
+#login-button {
     float: right;
+}
+#greeting-text
+{
+  padding: 5px;
 }
   .word-card {
     background-color: #dedbed;
