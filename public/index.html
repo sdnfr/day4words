@@ -10,7 +10,7 @@
   <title>day4words</title>
 
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="words.js"></script>
+
   <script type="module" src="index.js"></script>
   <script type="module" src="speech.js"></script>
 
@@ -22,8 +22,11 @@
 
 
     <div class="header-container">
-        <h1>day4words</h1>
-        <!-- <button class="login-button" onclick="googleSignIn()">Login</button> -->
+        <h1>day4words</h1>        
+        <p id="greeting-text">Bitte einloggen</p>
+
+        <button id="login-button">Login</button>
+
     </div>
   <div class="word-card" id="word-card-1">
     <div class="label" > </div>
@@ -45,7 +48,7 @@
   <input type="text" class="counter" value="0" id="counter"></input>
   <button class="button" id="minus">-</button>
   <button class="button" id="plus">+</button>
-  <p style="float:right"> v1.0.2</p>
+  <p style="float:right"> v1.1.0</p>
 
  
 
