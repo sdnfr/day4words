@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Future message generator</title>
+    <script>
+        function modifyDate() {
+
+            // get input from form
+            var month = parseInt(document.getElementById("month").value);
+            var year = parseInt(document.getElementById("year").value);
+
+            // default scheduling of 12 messages every 4 years
+            var new_year = year + 4 * month;
+
+            // planning to schedule until 2098
+            var end_year = 2098
+
+            // choose your favorite date when to display
+            var schedule_month = 1; // February
+            var schedule_day = 24;
+
+            // birth year required to display age
+            var birth_year = 1997;
+
+            // prompt saves output
+            var prompt;
+
+            // manual even spreading of entries. e.g. if there are 2 messages du, dict[2] shows that there is one due in January (1) and July(7)
+            var dict = {};
+            dict[1] = [6];
+            dict[2] = [1, 7];
+            dict[3] = [1, 5, 9];
+            dict[4] = [1, 4, 7, 10];
+            dict[5] = [1, 3, 6, 8, 11]
+            dict[6] = [1, 3, 5, 7, 9, 11];
+            dict[7] = [1, 3, 4, 6, 8, 9, 11];
+            dict[8] = [2, 3, 5, 6, 8, 9, 11, 12];
+            dict[9] = [2, 3, 4, 6, 7, 8, 10, 11, 12];
+            dict[10] = [2, 3, 4, 5, 6, 8, 9, 10, 11, 12];
+            dict[11] = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12];
+            dict[12] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+            // all 12 videos can be still scheduled before end year is reached
+            if (4 * 12 + year < end_year) // this is relevant until including 2049
+            {
+                // first part: strictly record 12 for every month for this year
+                var inputDate = new Date(new_year, schedule_month);
+                inputDate.setDate(schedule_day);
+
+                // add date and age to output prompt
+                prompt = inputDate.toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric' });
+                prompt = prompt + ". You will be " + (new_year - birth_year) + " years old.";
+
+                // additional: there is time from 2074 to 2098 where old me will never hear from his self that was 12x4=48 years younger
+                // thus: record messages for remaning years, but lower frequency
+                var years_left = end_year - 4 * 12 - year; // must be greater than 0
+
+                // case in between the years 2046 and 2050 which result in years left 0 and 4
+                if (years_left < 8) {
+                    //relax
+                }
+                else
+                // in between 2022 and 2046 youre supposed to do more to
+                // cover the period from 2022+48 and 2046+48
+                {
+                    // only do videos every 8 years in that period
+                    var times = parseInt(Math.floor(years_left / 8));
+
+                    // prompt if this month contains two messages to record
+                    if (dict[times].includes(month)) {
+                        var index = dict[times].indexOf(month) + 1;
+
+                        // schedule the additional message every 8 years after the 48 years long regular period ends
+                        var additional_year = year + 4 * 12 + index * 8;
+                        var additional_age = additional_year - birth_year;
+                        prompt = prompt + "\n Additionally, do one for " + additional_year + ". You will be " + additional_age + " years old."
+                    }
+                }
+            }
+            else // this is relevant beginning with the year 2050=end_year-48
+            {
+                // e.g. in 2050, there are 2098-2050= 48 years to schedule
+                var years_left = end_year - year;
+                if (years_left < 4) {
+                    prompt = "You are done recording. take the next 4 years and live in the present and reminisce about the good old days."
+                }
+                else {
+                    // how many times I can record the message, in 48 years i can record 48/4 = 12 messages, but this is less or equal than 12
+                    var times = parseInt(Math.floor(years_left / 4));
+                    // not enough years left to record 12 * 4 videos this year.. (recording one video a month for every 4 years.)
+                    // record less videos
+
+                    // get month of this years to do
+                    if (dict[times].includes(month)) {
+                        // if this month is to do
+                        // e.g. the year 2090 has 8 years left, thus times = 2. 
+                        // the first video is dict[2] due in 1st month for 2094, and the 
+                        // second video is due 7th month for 2098 
+                        var times_four = dict[times].indexOf(month) + 1;
+                        new_year = 4 * times_four + year;
+                        var inputDate = new Date(new_year, schedule_month);
+                        inputDate.setDate(schedule_day);
+
+                        // printing prompt if there is a message to record
+                        prompt = inputDate.toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric' });
+                        prompt = prompt + ". You will be " + (new_year - birth_year) + " years old.";
+
+                    }
+                    else {
+                        // this month video is not due find next month to display prompt
+                        var this_year = false;
+                        var reminderMonth = 1;
+
+                        // find the next month if there is any
+                        for (var key of dict[times]) {
+                            if (key > month) {
+                                reminderMonth = key;
+                                this_year = true;
+                                break;
+                            }
+                        }
+
+                        // if there is a date this year still pending
+                        if (this_year) {
+                            var reminderDate = new Date(year, reminderMonth - 1);
+                            var reminder = reminderDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+                            prompt = "This month there is no video due. Please come back in " + reminder;
+                        }
+                        else {
+                            // no more dates this year
+                            prompt = "This year all done. Come back next year.";
+                        }
+                    }
+                }
+            }
+            // Write prompt to html 
+            document.getElementById("outputDate").textContent = prompt;
+        }
+
+        // Set the current month and year as values in the input fields
+        window.onload = function () {
+            var currentDate = new Date();
+            var currentMonth = currentDate.getMonth() + 1;
+            var currentYear = currentDate.getFullYear();
+
+            document.getElementById("month").value = currentMonth;
+            document.getElementById("year").value = currentYear;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Future Message Timer</h1>
+    <label for="month">Enter the month:</label>
+    <input type="number" id="month" min="1" max="12" />
+    <br />
+    <label for="year">Enter the year:</label>
+    <input type="number" id="year" min="2000" max="2100" />
+    <br />
+    <button onclick="modifyDate()">Generate</button>
+    <p> This month's future message will be scheduled for: </p>
+    <p id="outputDate"></p>
+</body>
+
+</html>
