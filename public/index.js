@@ -178,8 +178,9 @@ function wordCardClicked() {
         // show the italian side 
         div.children[0].innerHTML = italianValue;
 
-        // show the speak button
+        // show the google and speak button
         div.children[1].hidden = false;
+        div.children[2].hidden = false;
 
         // add toggled class
         div.classList.add('toggled');
@@ -194,8 +195,9 @@ function wordCardClicked() {
         // show the english side
         div.children[0].innerHTML = englishValue;
 
-        // hide the speak button 
+        // hide the google and speak button 
         div.children[1].hidden = true;
+        div.children[2].hidden = true;
 
         // remove toggled class
         div.classList.remove('toggled');
@@ -248,6 +250,24 @@ function minusCounter(op) {
     updateDB(counterValue);
 }
 
+// handle google button call
+function Google(but)
+{
+    // select correct text to speak
+    var div = but.parentNode.children[0];
+    var text = div.innerHTML
+
+    // only speak if there is text
+    if (text !== "") {
+        console.log(text)
+        var url = "https://translate.google.com/?sl=it&tl=es&text=" + text + "&op=translate&hl=en"
+        window.open(url,"_self")
+
+    }
+}
+
+
+
 // fill first index of word cards
 fillWordCards(0);
 
@@ -263,4 +283,13 @@ document.getElementById("counter").onchange = updateCounter;
 var wordCards = document.getElementsByClassName("word-card");
 for (var i = 0; i < wordCards.length; i++) {
     wordCards[i].onclick = wordCardClicked;
+}
+
+var googleButtons = document.getElementsByClassName("google");
+// add soundbuttons
+for (var i = 0; i < googleButtons.length; i++) {
+    googleButtons[i].onclick = function (event) {
+        Google(this);
+        event.stopPropagation()
+    }
 }
