@@ -248,6 +248,24 @@ function minusCounter(op) {
     updateDB(counterValue);
 }
 
+// handle google button call
+function Google(but)
+{
+    // select correct text to speak
+    var div = but.parentNode.children[0];
+    var text = div.innerHTML
+
+    // only speak if there is text
+    if (text !== "") {
+        console.log(text)
+        var url = "https://translate.google.com/?sl=it&tl=es&text=" + text + "&op=translate&hl=en"
+        window.open(url,"_self")
+
+    }
+}
+
+
+
 // fill first index of word cards
 fillWordCards(0);
 
@@ -263,4 +281,13 @@ document.getElementById("counter").onchange = updateCounter;
 var wordCards = document.getElementsByClassName("word-card");
 for (var i = 0; i < wordCards.length; i++) {
     wordCards[i].onclick = wordCardClicked;
+}
+
+var googleButtons = document.getElementsByClassName("google");
+// add soundbuttons
+for (var i = 0; i < googleButtons.length; i++) {
+    googleButtons[i].onclick = function (event) {
+        Google(this);
+        event.stopPropagation()
+    }
 }
