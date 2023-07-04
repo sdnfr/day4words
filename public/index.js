@@ -178,8 +178,9 @@ function wordCardClicked() {
         // show the italian side 
         div.children[0].innerHTML = italianValue;
 
-        // show the speak button
+        // show the google and speak button
         div.children[1].hidden = false;
+        div.children[2].hidden = false;
 
         // add toggled class
         div.classList.add('toggled');
@@ -194,8 +195,9 @@ function wordCardClicked() {
         // show the english side
         div.children[0].innerHTML = englishValue;
 
-        // hide the speak button 
+        // hide the google and speak button 
         div.children[1].hidden = true;
+        div.children[2].hidden = true;
 
         // remove toggled class
         div.classList.remove('toggled');
